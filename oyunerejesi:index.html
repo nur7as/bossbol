@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOS$BOL — Ойын ережесі</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #3a8f4a;
+    --green-light: #4caf5e;
+    --green-dark: #2d6e3a;
+    --black: #0e0e0e;
+    --white: #ffffff;
+    --gray: #f5f5f5;
+    --gray-mid: #e8e8e8;
+    --text-muted: #888;
+    --radius: 14px;
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── PAGE SYSTEM ─── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: flex; flex-direction: column; }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    padding: 28px 32px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--black);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .logo span { color: var(--green); }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: none;
+    padding: 8px 0;
+    letter-spacing: 0.3px;
+    transition: color var(--transition);
+  }
+  .back-btn:hover { color: var(--black); }
+  .back-btn svg { transition: transform var(--transition); }
+  .back-btn:hover svg { transform: translateX(-3px); }
+
+  /* ─── HOME PAGE ─── */
+  #page-home {
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px 60px;
+  }
+
+  .home-inner {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  .home-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+  .home-logo span { color: var(--green); }
+
+  .home-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .home-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--black);
+    margin-bottom: 36px;
+    padding: 0 8px;
+  }
+
+  .choice-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 8px 0;
+  }
+  .choice-divider::before,
+  .choice-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gray-mid);
+  }
+  .choice-divider span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 20px 24px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .btn-primary:hover::after { opacity: 1; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-green {
+    background: var(--green);
+    color: #fff;
+  }
+  .btn-green:hover { background: var(--green-light); }
+
+  .btn-dark {
+    background: var(--black);
+    color: #fff;
+  }
+  .btn-dark:hover { background: #222; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+  }
+  .btn-outline:hover { background: var(--black); color: #fff; }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .home-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .divider-line {
+    width: 100%;
+    height: 1px;
+    background: var(--gray-mid);
+    margin: 8px 0 20px;
+  }
+
+  /* ─── VIDEO PAGE ─── */
+  #page-video {
+    padding: 0 0 60px;
+  }
+
+  #page-video .site-header {
+    margin-bottom: 32px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .video-page-header {
+    padding: 0 32px 32px;
+    border-bottom: 1px solid var(--gray-mid);
+    margin-bottom: 40px;
+  }
+
+  .video-page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    color: var(--black);
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 32px;
+  }
+
+  .video-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1.5px solid var(--gray-mid);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    background: var(--white);
+  }
+  .video-card:hover {
+    border-color: var(--green);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(58, 143, 74, 0.12);
+  }
+
+  .video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity var(--transition);
+  }
+  .video-card:hover .video-thumb img { opacity: 1; }
+
+  .play-badge {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: transform var(--transition);
+  }
+  .video-card:hover .play-circle { transform: scale(1.1); }
+
+  .play-circle svg {
+    color: var(--green);
+    margin-left: 3px;
+  }
+
+  .video-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--green);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-body {
+    padding: 14px 16px 16px;
+  }
+
+  .video-title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+
+  .watch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  /* ─── PDF PAGE ─── */
+  #page-pdf {
+    padding: 0 0 60px;
+  }
+
+  #page-pdf .site-header {
+    margin-bottom: 32px;
+  }
+
+  .pdf-page-header {
+    padding: 0 32px 32px;
+    border-bottom: 1px solid var(--gray-mid);
+    margin-bottom: 40px;
+  }
+
+  .pdf-page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 1px;
+    color: var(--black);
+  }
+
+  .pdf-content {
+    padding: 0 32px;
+  }
+
+  .pdf-card {
+    border-radius: var(--radius);
+    border: 1.5px solid var(--gray-mid);
+    background: var(--gray);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .pdf-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .pdf-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pdf-card-info {
+    flex: 1;
+  }
+
+  .pdf-card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .pdf-card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .pdf-card-badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--green);
+    border: 1.5px solid var(--green);
+    border-radius: 6px;
+    padding: 4px 8px;
+    flex-shrink: 0;
+  }
+
+  .pdf-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .pdf-actions .btn-primary {
+    flex: 1;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page.active .animate-in {
+    animation: fadeUp 0.4s ease both;
+  }
+  .page.active .animate-in:nth-child(1) { animation-delay: 0.05s; }
+  .page.active .animate-in:nth-child(2) { animation-delay: 0.1s; }
+  .page.active .animate-in:nth-child(3) { animation-delay: 0.15s; }
+  .page.active .animate-in:nth-child(4) { animation-delay: 0.2s; }
+  .page.active .animate-in:nth-child(5) { animation-delay: 0.25s; }
+  .page.active .animate-in:nth-child(6) { animation-delay: 0.3s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .site-header { padding: 18px 16px 0; }
+
+    #page-home { padding: 28px 16px 48px; }
+    .home-logo { font-size: 40px; }
+    .home-title { font-size: 15px; }
+
+    .video-page-header,
+    .pdf-page-header,
+    .pdf-content { padding-left: 16px; padding-right: 16px; padding-bottom: 20px; }
+
+    .video-page-title,
+    .pdf-page-title { font-size: 26px; }
+
+    /* Mobile: horizontal card layout */
+    .video-grid {
+      grid-template-columns: 1fr;
+      padding: 0 16px;
+      gap: 10px;
+    }
+
+    .video-card {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      border-radius: 12px;
+    }
+
+    .video-thumb {
+      width: 120px;
+      min-width: 120px;
+      aspect-ratio: unset;
+      height: auto;
+      border-radius: 0;
+      flex-shrink: 0;
+    }
+
+    .play-circle {
+      width: 34px;
+      height: 34px;
+    }
+
+    .video-number {
+      top: 8px;
+      left: 8px;
+      width: 22px;
+      height: 22px;
+      font-size: 10px;
+      border-radius: 5px;
+    }
+
+    .video-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .video-title {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .watch-link { font-size: 11px; }
+
+    .pdf-actions { flex-direction: column; }
+
+    .pdf-card-inner { padding: 18px; gap: 12px; }
+    .pdf-card-icon { width: 46px; height: 46px; }
+    .pdf-card-name { font-size: 14px; }
+  }
+
+  @media (min-width: 900px) {
+    .home-inner { max-width: 520px; }
+    .video-grid { grid-template-columns: repeat(3, 1fr); max-width: 900px; }
+    .video-page-header, .pdf-page-header, .pdf-content { max-width: 900px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1: HOME — выбор формата
+════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="home-inner">
+    <div class="home-logo animate-in"><span>BOS</span>$<span>BOL</span></div>
+    <div class="home-subtitle animate-in">Үстел ойыны</div>
+
+    <p class="home-title animate-in">
+      Ойын ережесін екі түрлі нұсқада көре аласыз:
+    </p>
+
+    <div class="home-actions">
+      <button class="btn-primary btn-green animate-in" onclick="goTo('video')">
+        <div class="btn-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+        Бейне нұсқаулық
+      </button>
+
+      <div class="choice-divider animate-in"><span>немесе</span></div>
+
+      <button class="btn-primary btn-outline animate-in" onclick="goTo('pdf')">
+        <div class="btn-icon" style="background: var(--black); color:#fff;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        Жазбаша (PDF)
+      </button>
+    </div>
+
+    <div class="divider-line animate-in"></div>
+
+    <a href="https://drive.google.com/uc?export=download&id=1PkkckibIFnGjMT94wIABpdi_Wubq7GYn" class="btn-primary btn-dark animate-in" style="text-decoration:none;">
+      <div class="btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </div>
+      «Есеп қағазын» жүктеу
+    </a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PAGE 2: VIDEO
+════════════════════════════════════════ -->
+<div id="page-video" class="page">
+  <header class="site-header">
+    <span class="logo" onclick="goTo('home')"><span>BOS</span>$<span>BOL</span></span>
+    <button class="back-btn" onclick="goTo('home')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Артқа
+    </button>
+  </header>
+
+  <div class="video-page-header">
+    <div class="section-label">Бейне нұсқаулық</div>
+    <h1 class="video-page-title">Ойын ережесі —<br>видео арқылы</h1>
+  </div>
+
+  <div class="video-grid">
+
+    <a href="https://www.youtube.com/watch?v=5p4VWU7jL3o" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/5p4VWU7jL3o/mqdefault.jpg" alt="Видео 1" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">1</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Ойынмен танысу. Мақсатымыз бен миссиямыз</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=GIH5xeIqpn4" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/GIH5xeIqpn4/mqdefault.jpg" alt="Видео 2" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">2</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Ойынды бастаудың 10 этапы</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=5G6VZexgrMI" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/5G6VZexgrMI/mqdefault.jpg" alt="Видео 3" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">3</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Күйбең тіршілік ұяшықтары (ішкі алтыбұрышты жол)</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=nCiFifl43HI" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/nCiFifl43HI/mqdefault.jpg" alt="Видео 4" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">4</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Есеп қағазы күйбең тіршілік</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=oxMvMtNnIWU" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/oxMvMtNnIWU/mqdefault.jpg" alt="Видео 5" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">5</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Бостандық жолы ұяшықтары (сыртқы алтыбұрышты жол)</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=wiaOAlgJwAw" target="_blank" class="video-card animate-in">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/wiaOAlgJwAw/mqdefault.jpg" alt="Видео 6" loading="lazy">
+        <div class="play-badge">
+          <div class="play-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-number">6</div>
+      </div>
+      <div class="video-body">
+        <div class="video-title">Бостандық жолында есеп қағазын толтыру</div>
+        <span class="watch-link">
+          Көру
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     PAGE 3: PDF
+════════════════════════════════════════ -->
+<div id="page-pdf" class="page">
+  <header class="site-header">
+    <span class="logo" onclick="goTo('home')"><span>BOS</span>$<span>BOL</span></span>
+    <button class="back-btn" onclick="goTo('home')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Артқа
+    </button>
+  </header>
+
+  <div class="pdf-page-header">
+    <div class="section-label">Жазбаша нұсқа</div>
+    <h1 class="pdf-page-title">Ойын ережесі —<br>PDF нұсқасы</h1>
+  </div>
+
+  <div class="pdf-content">
+
+    <div class="pdf-card animate-in">
+      <div class="pdf-card-inner">
+        <div class="pdf-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="pdf-card-info">
+          <div class="pdf-card-name">Ойын ережесі</div>
+          <div class="pdf-card-meta">PDF · BOS$BOL үстел ойыны</div>
+        </div>
+        <div class="pdf-card-badge">PDF</div>
+      </div>
+    </div>
+
+    <div class="pdf-actions animate-in">
+      <a href="https://drive.google.com/file/d/1mLHPwreLjUUManO1AUGOnZPCa5OOAIw3/view" target="_blank" class="btn-primary btn-green" style="text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Онлайн оқу
+      </a>
+      <a href="https://drive.google.com/uc?export=download&id=1mLHPwreLjUUManO1AUGOnZPCa5OOAIw3" class="btn-primary btn-outline" style="text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Жүктеу
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ─── ROUTING ───
+  const pages = {
+    home: document.getElementById('page-home'),
+    video: document.getElementById('page-video'),
+    pdf: document.getElementById('page-pdf'),
+  };
+
+  function goTo(name) {
+    Object.values(pages).forEach(p => p.classList.remove('active'));
+    const target = pages[name];
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo(0, 0);
+      // Re-trigger animations
+      target.querySelectorAll('.animate-in').forEach(el => {
+        el.style.animation = 'none';
+        el.offsetHeight;
+        el.style.animation = '';
+      });
+    }
+    window.location.hash = name === 'home' ? '' : name;
+  }
+
+  // ─── Hash routing on load ───
+  function routeFromHash() {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'video' || hash === 'pdf') {
+      goTo(hash);
+    } else {
+      goTo('home');
+    }
+  }
+
+  window.addEventListener('hashchange', routeFromHash);
+  window.addEventListener('DOMContentLoaded', routeFromHash);
+
+
+</script>
+
+</body>
+</html>
